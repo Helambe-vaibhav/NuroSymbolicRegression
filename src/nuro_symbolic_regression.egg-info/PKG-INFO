@@ -1,0 +1,96 @@
+Metadata-Version: 2.4
+Name: nuro-symbolic-regression
+Version: 0.1.0
+Summary: Portfolio-grade symbolic regression project with clean architecture
+Author: NuroSymbolicRegression
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.24
+Requires-Dist: sympy>=1.12
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
+
+# Nuro Symbolic Regression
+
+Portfolio-grade symbolic regression project, refactored from research notebooks into a clean architecture Python package.
+
+## What this project does
+
+- Evolves symbolic expressions with genetic programming.
+- Supports arithmetic and transcendental operators with safe evaluation.
+- Trains on built-in benchmark functions (`mean`, `linear`, `product`, `poly`, `sine_mix`).
+- Exports final expressions to SymPy and LaTeX.
+
+## Architecture
+
+- `src/nuro_symbolic_regression/domain`: expression trees, operator semantics, benchmark definitions.
+- `src/nuro_symbolic_regression/application`: config, fitness objective, training use case.
+- `src/nuro_symbolic_regression/infrastructure`: GP search engine and exporters.
+- `src/nuro_symbolic_regression/interfaces`: command-line interface.
+- `tests`: unit and smoke tests.
+- `docs/architecture.md`: blueprint.
+- `docs/migration.md`: migration mapping from legacy scripts.
+
+## Quick start
+
+```powershell
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+pytest
+```
+
+## CLI workflow
+
+### Train one benchmark
+
+```powershell
+nsr train --benchmark mean --size 300 --generations 80 --population-size 160
+```
+
+### Train and return JSON payload
+
+```powershell
+nsr train --benchmark linear --json
+```
+
+### Run benchmark sweep
+
+```powershell
+nsr benchmark --all --generations 60 --population-size 120
+```
+
+## Python API usage
+
+```python
+from nuro_symbolic_regression.application.config import EvolutionConfig
+from nuro_symbolic_regression.application.use_cases import train_symbolic_regressor
+from nuro_symbolic_regression.domain.benchmarks import generate_dataset
+
+config = EvolutionConfig(generations=40, population_size=100, random_seed=7)
+data = generate_dataset("mean", size=300, seed=7)
+result = train_symbolic_regressor(data, config)
+
+print(result.best_expression.to_infix())
+print(result.best_score)
+```
+
+## Legacy research scripts
+
+The original exploratory files remain in the project root for reference:
+
+- `expressioncration.py`
+- `neuro_symbol_network.py`
+- `neuro_symbol_network3.py`
+- `untitled87.py`
+
+Use these as historical experiments only. The package under `src/` is the canonical implementation.
+
+## Recommended workflow
+
+1. Add or adjust benchmark in `domain/benchmarks.py`.
+2. Tune `EvolutionConfig` in `application/config.py`.
+3. Run `pytest`.
+4. Run CLI benchmark sweep and collect best expressions.
+5. Commit with benchmark output snapshots for portfolio evidence.
+

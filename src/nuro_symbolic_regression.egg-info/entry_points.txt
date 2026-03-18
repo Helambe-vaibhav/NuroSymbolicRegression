@@ -1,0 +1,2 @@
+[console_scripts]
+nsr = nuro_symbolic_regression.interfaces.cli:main
