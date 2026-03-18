@@ -1,6 +1,6 @@
 # Nuro Symbolic Regression
 
-Portfolio-grade symbolic regression project, refactored from research notebooks into a clean architecture Python package.
+A genetic programming–based symbolic regression engine that discovers interpretable mathematical expressions from data. The system evolves expression trees using mutation and crossover, optimizing a complexity-aware objective that balances prediction accuracy and model simplicity. It includes a modular architecture, benchmarking suite, and CLI for reproducible experiments and analysis.
 
 ## What this project does
 
